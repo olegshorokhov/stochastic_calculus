@@ -1,0 +1,456 @@
+\documentclass[reqno,psamsfonts, 10pt]{amsart}
+\usepackage{graphicx, amssymb, amsmath, amsfonts, hyperref, amsthm, amsbsy}
+\usepackage{mathrsfs}
+\usepackage[active]{srcltx}
+
+\newtheorem{thm}{Theorem}
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{definition}[thm]{Definition}
+
+\theoremstyle{remark}
+\newtheorem{rem}[thm]{Remark}
+
+\newcommand{\cov}{\mbox{$\mathrm{cov}$}}
+\newcommand{\sgn}{\mbox{$\mathrm{sgn}$}}
+\newcommand{\Id}{\mbox{$\mathrm{Id}$}}
+\newcommand{\sinc}{\mbox{$\mathrm{sinc}$}}
+\newcommand{\comment}[1]{}
+\newtheorem{conj}{Conjecture}
+
+%\numberwithin{equation}{section}
+
+
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+
+\begin{document}
+
+\section*{Stochastic Calculus, Spring 2025, March 17, \\
+Lecture 1\\
+Construction of Brownian motion}
+
+\footnotetext[1]{this version \today}
+
+Reading for this lecture
+(for references see the end of the lecture):
+\begin{itemize}
+\item \cite{1} pp. 72-108
+\end{itemize}
+\subsection*{Scaled Random Walks}
+
+Our main object of study in this course will be
+\textit{stochastic processes}. Loosely speaking, stochastic
+process is a collection of random variables indexed by
+``time" variable $t$: $X(t).$ Variable $t$ could take
+values in a discreet set, for instance in a set of
+positive integers or it could take values in a continuous
+set, for instance in $[0,\infty).$ An example of stochastic
+process is a stock price that changes in time.
+
+Our main objective for today is to build a very important
+stochastic process called \textbf{Brownian Motion}. Brownian
+Motion is a continuous-time stochastic process usually indexed by
+$[0,\infty).$ One dimensional Brownian Motion satisfies the
+following properties:
+\begin{description}
+\item[\bf Independence of increments.] If $t_0 < t_1 < \dots <
+t_n$ then random variables $B(t_0), B(t_1) - B(t_0), \dots, B(t_n)
+- B(t_{n-1})$ are independent.
+
+\item[Normal distribution of increments.] If $s, t \ge 0$
+then
+\begin{equation}
+\mathbb{P}\left[ B(t+s) - B(s) \in A) \right] = \int \limits_A
+\frac{1}{\sqrt{2 \pi t}} e^{-x^2/2t} dx.
+\end{equation}
+
+\item[Continuity of trajectories.] With probability one,
+$B_0 = 0$ and $t \to B_t$ is continuous.
+\end{description}
+
+
+
+
+It is not obvious from the above definition that Brownian
+Motion exists. We show that it does exist by essentially
+constructing Brownian Motion.
+
+We start with a simpler stochastic process that is called
+\textbf{Symmetric Random Walk}~(SRW).  To construct a SRW we
+repeatedly toss a fair coin: $\mathbb{P}(H) = \mathbb{P}(T) =
+1/2.$ We define the successive outcomes of the tosses by $w_1,
+w_2, w_3 \dots \in \{H,T\}$ and define $w = w_1 w_2 w_3 \dots,$ in
+other words, $w$ is the infinite sequence of tosses and $w_n$ is
+the outcome of the $n^{\mbox{th}}$ toss. Next, let $X_j$ be a
+random variable defined as
+\begin{equation}
+X_j =
+\begin{cases}
+1  \quad & \mbox{ if } w_j = \mbox{H,} \nonumber \\
+-1 \quad & \mbox{ if } w_j = \mbox{T.} \nonumber
+\end{cases}
+\end{equation}
+Define discrete-time stochastic process $M(n)$ in the
+following way: $$M(0) = 0, M(n) = \sum \limits_{j=1}^{n}
+X_j.$$ The process $M(n)$ is called a symmetric random
+walk. With each step it either steps up one unit or down
+one unit, and each of the two possibilities is equally
+likely.
+
+\bigskip
+
+
+
+%\textbf{Exercise 1.} For a fixed positive integers $k, n$ what is
+%the probability $\mathbb{P}(M(n) = k)?$
+
+\subsection*{Increments of the SRW} A random walk has
+independent increments. This means that if we choose nonnegative
+integers $0 = n_0 < n_1 < \dots < n_k,$ then random variables
+$$
+M(n_1) = M(n_1) - M(n_0), M(n_2) - M(n_1), \dots, M(n_k) -
+M(n_{k-1})
+$$
+are independent. Each of these random variables
+$$
+M(n_{i+1}) - M(n_i) = \sum \limits_{j = n_i + 1}^{n_{i+1}}
+X_j
+$$
+is called an increment of the random walk. It is the change
+in the position of the random walk between times $n_i$ and
+$n_{i+1}.$ Increments over non-overlapping time intervals
+are independent because they depend on different coin
+tosses. Moreover,
+$$
+\mathbb{E}(M(n_{i+1}) - M(n_i)) = \sum \limits_{j = n_i
++1}^{n_{i+1}} \mathbb{E} X_j = 0
+$$
+and
+$$
+\mbox{Var} (M(n _{i+1}) - M(n_i)) = \sum \limits_{j = n_i
++1}^{n_{i+1}} \mbox{Var} X_j = n_{i+1} - n_i \ \mbox{since}
+\ \mbox{Var} X_j = 1.
+$$
+
+
+
+\subsection*{Martingale property for the SRW}
+
+
+In order to define martingale we need the notion of
+$\sigma$-algebra. There is a very important, nontechnical
+reason to include $\sigma$-algebras in the study of
+stochastic processes, and that is to keep track of
+information. The temporal feature of a stochastic process
+suggests a flow of time, in which, at every moment $t \ge
+0,$ we can talk about a past, present and future and can
+ask how much an observer of the process knows about it at
+present, as compared to how much he knew at some point in
+the past or will know at some point in the future.
+\begin{definition} A filtration on $(\Omega, \mathcal{F})$
+is a family $\{\mathcal{F}_t\}_{t \ge 0}$ of
+$\sigma$-algebras $\mathcal{F}_t \subset \mathcal{F}$ such
+that
+$$
+0 \le s \le t \Longrightarrow \mathcal{F}_s \subset
+\mathcal{F}_t, \mbox{i.e., } \{\mathcal{F}_t\}_{t \ge 0}
+\mbox{ is increasing}.
+$$
+\end{definition}
+Thus, informally, one can think about the $\sigma$-algebra
+$\mathcal{F}_t$ in the above definition as a ``knowledge"
+available at time $t.$ The fact that $\{\mathcal{F}_t\}_{t
+\ge 0}$ is increasing just reflects the fact that as time
+goes on the amount of available information increases.
+
+
+\begin{definition}
+A stochastic process $\{Z_t\}_{t \ge 0}$ is called a
+martingale with respect to a filtration
+$\{\mathcal{F}_t\}_{t \ge 0} $ if
+\begin{description}
+\item[a)] $Z_t$ is $\mathcal{F}_t$-measurable for all
+$t$
+
+\item[b)] $\mathbb{E}|Z_t| < \infty$ for all $t$
+
+\item[c)] $\mathbb{E}(Z_t | \mathcal{F}_s) = Z_s$ for all
+$s \le t.$
+\end{description}
+\end{definition}
+
+The most important property in the above definition is property
+$c).$ Simply put, it states that ``the best" guess for $X_t$ given
+information available at moment $s$ is~$X_s,$ and thus process
+$X_t$ has neither upward nor downward drift.
+
+Now let's check that the SRW is a martingale. First, we need to
+specify a filtration $\{ \mathcal{F}_t \}_{t \ge 0}.$ Let
+$\mathcal{F}_n$ be the a $\sigma$-algebra(read information)
+generated by the set of random variables $X_1, X_2, \dotsm X_n.$
+\begin{description}
+\item[a)] $M(n) = \sum \limits_{j=1}^n X_j$ is
+$\mathcal{F}_n$-measurable since it depends only on $X_j, j
+\le n,$ i.e. on the information available at time $n.$
+
+\item[b)] From the fact that $|M(t)| \le t$
+$$
+\left(\mathbb{E}|M(t)|\right)^2 \le t < \infty.
+$$
+
+\item[c)] using the fact that $\mathbb{E}(M(s) |
+\mathcal{F}_s) = M(s)$ and the fact that  random variable
+$M(t) - M(s)$ is independent of $\sigma$-algebra
+$\mathcal{F}_s$ we can write:
+\begin{align}
+\mathbb{E}(M(t) | \mathcal{F}_s) & = \mathbb{E}(M(t) - M(s)
++ M(s)| \mathcal{F}_s) = \mathbb{E}(M(t) - M(s)|
+\mathcal{F}_s)
++ \mathbb{E}(M(s) | \mathcal{F}_s) \nonumber \\
+& = \mathbb{E}(M(t) - M(s)) + M(s) = 0 + M(s) = M(s).
+\end{align}
+
+\end{description}
+
+
+
+\subsection*{Quadratic variation of the SRW}
+
+Quadratic variation of a discrete stochastic process up to time
+$t$ is defined as
+\begin{equation}
+\langle M,M\rangle_t = \sum \limits_{j=1}^t(M(j) -
+M(j-1))^2.
+\end{equation}
+The quadratic variation up to time $t$ along a path is computed by
+taking all the one-step increments $M(j) - M(j-1)$ along that
+path, squaring these increments and then summing them. Clearly,
+for the symmetric random walk increments can take values $\pm 1$
+and thus
+\begin{equation}
+\langle M,M\rangle_t = t.
+\end{equation}
+Note that this is computed path by path and the fact that
+quadratic variation is the same along any path is a special
+feature of the symmetric random walk we consider. The
+consequence of the fact that quadratic variation is
+computed path by path is that for a general stochastic
+process quadratic variation is a random quantity, depending
+on the trajectory.
+
+
+
+\subsection*{Scaled SRW}
+To approximate a Brownian motion we speed up time and scale
+down the step size of a SRW. More precisely, we fix a
+positive integer $n$ and define the scaled SRW at rational
+points $\frac{k}{n}$ as
+\begin{equation}\label{scaledSRW}
+B^{(n)}\left(\frac{k}{n}\right) = \frac{1}{\sqrt{n}} M(k).
+\end{equation}
+At all other points we define $B^{(n)}(t)$ be linear
+interpolation between its values at the nearest points of
+the form $\frac{k}{n}.$
+
+
+The following properties of the scaled SRW could be easily
+proved using the corresponding properties of the SRW and we
+leave their proof as an exercise:
+
+\begin{description}
+\item[a)] independence of increments, i.e., for all
+rational numbers $0 = t_0 < t_1 < \dots < t_n$ of the form
+$\frac{k}{n}$ random variables
+\begin{equation}
+B^{(n)}(t_1) - B^{(n)}(t_0), B^{(n)}(t_2) - B^{(n)}(t_1),
+\dots, B^{(n)}(t_n) - B^{(n)}(t_{n-1})
+\end{equation}
+are independent(because they depend on different coin
+tosses).
+
+\item[b)] $\mathbb{E}(B^{(n)}(t) - B^{(n)}(s)) = 0,
+\mbox{Var} (B^{(n)}(t) - B^{(n)}(s)) = t - s.$
+
+\item[c)] $\mathbb{E}(B^{(n)}(t)| \mathcal{F}_s) =
+B^{(n)}(s).$
+
+\item[d)] quadratic variation of the scaled SRW:
+\begin{equation*}
+\langle B^{(n)} B^{(n)}\rangle_t = t.
+\end{equation*}
+
+\end{description}
+
+
+\subsection*{Limiting distribution of the scaled SRW}
+
+Now the idea is to let $n \to \infty$ in \eqref{scaledSRW}
+and in the limit obtain Brownian motion. In the previous
+section we studied a single path(trajectory) of the scaled
+SRM. In other words, we have fixed a sequence of coin
+tosses $w = w_1 w_2 \dots$ and drawn the path of the
+resulting process as time $t$ varies. Another way to think
+about the scaled symmetric random walk is to fix time $t$
+and consider the set of all possible paths evaluated at
+that time $t,$ i.e., consider the distribution of random
+variable $B^{(n)}(t).$ By definition $B^{(n)}(t) =
+\frac{1}{\sqrt{n}} M_{nt}$ or if $t = \frac{k}{n}$ then
+$B^{(n)}(t) = \frac{1}{\sqrt{n}} M_k.$ Since $M_k = \sum
+\limits_{j=1}^k X_j$ has a binomial distribution with
+parameters $k$ and $1/2$ one can easily calculate the
+distribution of $B^{(n)}(t).$ In particular, one can draw
+the histogram of $B^{(n)}(t).$
+
+We know that random variable $B^{(n)}(t)$ has mean $0$ and
+variance $t.$ If we draw on top of the histogram of
+$B^{(n)}(t)$ the graph of normal density with mean zero and
+variance $t$ we will see that the distribution of
+$B^{(n)}(t)$ is nearly normal. Actually, the Central Limit
+Theorem asserts that $B^{(n)}(t)$ converges in distribution
+to the normal random variable $N(0,t).$ But let us not use
+this theorem and prove the convergence of $B^{(n)}(t)$ from
+scratch. The whole point of this exercise is learning a
+very powerful mathematical tool known as ``characteristic
+functions".
+
+\begin{thm}
+For any fixed $t \ge 0,$ the distribution of the scaled
+random walk $B^{(n)}(t)$ evaluated at time $t$ converges to
+the normal distribution with mean zero and variance~$t.$
+\end{thm}
+
+
+\begin{proof}
+To prove this theorem we use a tool from probability theory
+- characteristic functions.
+\begin{definition}
+Let $X$ be a random variable with distribution
+$\mathbb{P}.$ Characteristic function of $X$ is defined as
+\begin{equation}
+\varphi_X(u) = \mathbb{E}e^{i u X} = \int e^{iux} dP(x)
+\end{equation}
+for every $u \in \mathbb{R}.$
+\end{definition}
+
+\textbf{Example.}
+
+1) $X = Be(p).$ Then
+\begin{equation}
+\varphi_X(u) = p(e^{iu} - 1) + 1.
+\end{equation}
+
+2) $X = Bi(n,p).$ Then $\mathbb{P}(X=k) = C_n^k
+p^k(1-p)^{n-k}$ and
+\begin{equation}
+\varphi_X(u) = (p(e^{iu} - 1) + 1)^n.
+\end{equation}
+
+3) $X = \mbox{Poisson}(\lambda),$ then $\mathbb{P}(X = k) =
+e^{-\lambda} \frac{\lambda^k}{k!}$ and
+\begin{equation}
+\varphi_X(u) = \sum \limits_{k=0}^\infty e^{-\lambda}
+\frac{\lambda^k}{k!} e^{i u k} = e^{-\lambda} \sum
+\limits_{k=0}^{\infty} \frac{(\lambda e^{iu})^k }{k!} =
+e^{\lambda(e^{it} - 1)}.
+\end{equation}
+
+4) $X$ is a Gaussian random variable $N(m,\sigma^2).$ Then
+\begin{equation}
+\varphi_X(u) = e^{iu m - u^2 \sigma^2/2}.
+\end{equation}
+
+
+The importance of the characteristic functions consists
+could be summarized in the following two theorems:
+
+1. If two random variables have the same characteristic
+function then they have the same distribution.(of course,
+if two random variables have the same distributions then
+they have the same characteristic functions).
+
+2. \textbf{Paul L\'{e}vy Theorem.} Let $X_n$ be a sequence
+of random variables on $\mathbb{R}.$ Then
+
+a) If $X_n$ converges to $X$ is distribution then
+$\varphi_{X_n}(u) \to \varphi_X(u)$ for every $u$ and in
+fact this convergence is uniform.
+
+b) If $\varphi_{X_n}(u) \to \varphi_X(u)$ then $X_n$
+converges to $X$ is distribution.
+
+c) If $\varphi_{X_n}(u)$ converges to some function
+$\varphi(u)$ and $\varphi(u)$ is continuous at $0$ then
+there exists a unique random variable $X$ such that
+$\varphi$ is the characteristic function of $X$ and $X_n$
+converges to $X$ in distribution.
+
+
+We use part (b) of the theorem to prove that $B^{(n)}(t)$
+converges to normal distribution with expectation zero and
+variance $t.$
+
+\begin{align}
+\varphi_{B^{(n)}}(u) & = \mathbb{E} e^{i u B^{(n)}(t)} =
+\mathbb{E} e^{i u \frac{1}{\sqrt{n}} M_{nt} } = \mathbb{E}
+e^{i u \frac{1}{\sqrt{n}} \sum \limits_{j=1}^{nt} X_j } =
+\left(\mathbb{E} e^{i u \frac{1}{\sqrt{n}} X_j
+}\right)^{nt} \nonumber \\
+& = \left(\frac{1}{2} e^{i u /\sqrt{n}} + \frac{1}{2}
+e^{-iu/\sqrt{n}}\right)^{nt}.
+\end{align}
+We need to show that as $n \to \infty$
+$$
+\varphi_n(u) = \left(\frac{1}{2} e^{i u /\sqrt{n}} +
+\frac{1}{2} e^{-iu/\sqrt{n}}\right)^{nt}
+$$
+converges to the characteristic function of the normal
+random variable with mean $0$ and variance $t,$ i.e., to
+$e^{-u^2 t/2}.$ Expanding in Taylor series
+\begin{align}
+\frac{1}{2} e^{i u /\sqrt{n}} + \frac{1}{2}
+e^{-iu/\sqrt{n}} = 1 - \frac{u^2}{2n} +
+O(\frac{1}{n^{3/2}})
+\end{align}
+and thus
+$$
+\varphi_n(u) = \left(1 - \frac{u^2}{2n} +
+O(\frac{1}{n^{3/2}})\right)^{nt} \to e^{-\frac{u^2}{2n}
+\cdot nt} = e^{-u^2 t/2}.
+$$
+Thus we have proved that $B^{(n)}(t)$ converges in
+distribution to a normal random variable with expectation
+zero and variance $t.$
+
+\begin{rem} Truly speaking, we have just demonstrated that
+for a fixed moment $t$ distribution of $B^{(n)}(t)$
+converges to $N(0,t)$ but we did not prove the convergence
+of the whole stochastic process to Brownian motion. To do
+this one has to prove the convergence of the finite
+dimensional distributions and use Prokhorov's theorem.
+\end{rem}
+\end{proof}
+
+
+
+
+\begin{thebibliography}{1}
+
+\bibitem[1]{1} Steven Shreve, \textit{Stochastic Calculus for Finance II:
+Continuous-Time Models}
+
+\bibitem[2]{2} Richard Durrett, \textit{Stochastic Calculus: A Practical Introduction.}
+
+\bibitem[3]{3} Ioannis Karatzas, Steven E. Shreve, \textit{Brownian Motion and Stochastic Calculus.}
+
+\bibitem[4]{4} Bernt Oksendal, Stochastic Differential Equations
+\end{thebibliography}
+\end{document}
