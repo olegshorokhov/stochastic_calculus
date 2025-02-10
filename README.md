@@ -1,2 +1,2 @@
 # stochastic_calculus
-Stochastic Calculus
+Stochastic Calculus - Spring 2025 
